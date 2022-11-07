@@ -9,7 +9,7 @@ import ru.company.framework.pages.StartPage;
 public class StartPageSteps extends BaseSteps{
 	private StartPage startPage = pageManager.getStartPage();
 
-	@Step("Переходим в раздел {menuTitle}")
+	@Step("Переходим в раздел \"{menuTitle}\"")
 	public StartPageSteps openMenu(String menuTitle) {
 		WebElement menu = startPage.selectMenu(menuTitle);
 		Assertions.assertNotNull(menu, String.format("Меню %s не найдено на странице", menuTitle));
@@ -18,7 +18,7 @@ public class StartPageSteps extends BaseSteps{
 		return this;
 	}
 
-	@Step("Выбираем подменю {subMenuTitle}")
+	@Step("Выбираем подменю \"{subMenuTitle}\"")
 	public SecondaryHousingMortgageSteps openSubMenu(String subMenuTitle) {
 		WebElement subMenu = startPage.selectSubMenu(subMenuTitle);
 		Assertions.assertNotNull(subMenu, String.format("Меню %s не найдено на странице", subMenuTitle));

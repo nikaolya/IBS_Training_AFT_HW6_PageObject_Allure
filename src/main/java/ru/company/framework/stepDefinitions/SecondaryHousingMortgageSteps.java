@@ -13,7 +13,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class SecondaryHousingMortgageSteps extends BaseSteps {
 	SecondaryHousingMortgagePage mortgagePage = pageManager.getMortgagePage();
 
-	@Step("Прокручиваем страницу до раздела {section}")
+	@Step("Прокручиваем страницу до раздела \"{section}\"")
 	public SecondaryHousingMortgageSteps scrollToSection(String section) {
 		Assertions.assertNotNull(mortgagePage.getH2Header(section),
 				String.format("Заголовка %s нет на странице", section));
