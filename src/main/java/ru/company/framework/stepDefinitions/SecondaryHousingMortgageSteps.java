@@ -3,6 +3,7 @@ package ru.company.framework.stepDefinitions;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebElement;
+import ru.company.framework.pages.BasePage;
 import ru.company.framework.pages.SecondaryHousingMortgagePage;
 
 import java.util.Map;
@@ -10,8 +11,8 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class SecondaryHousingMortgageSteps extends BaseSteps {
-	SecondaryHousingMortgagePage mortgagePage = pageManager.getMortgagePage();
+public class SecondaryHousingMortgageSteps extends BasePage {
+	SecondaryHousingMortgagePage mortgagePage = pageManager.getPage(SecondaryHousingMortgagePage.class);
 
 	@Step("Прокручиваем страницу до раздела \"{section}\"")
 	public SecondaryHousingMortgageSteps scrollToSection(String section) {
@@ -26,12 +27,23 @@ public class SecondaryHousingMortgageSteps extends BaseSteps {
 		return this;
 	}
 
+//	public void waitPageLoadingComplete(int maxWaitMillis, int pollDelimiter) {
+//		double startTime = System.currentTimeMillis();
+//		while (System.currentTimeMillis() < startTime + maxWaitMillis) {
+//			String prevState = webDriver.getPageSource();
+//			Thread.sleep(pollDelimiter); // <-- would need to wrap in a try catch
+//			if (prevState.equals(webDriver.getPageSource())) {
+//				return;
+//			}
+//		}
+//	}
+
 	@Step("Заполняем поля значениями")
 	public SecondaryHousingMortgageSteps fillInputFields(Map<String, Integer> input) {
 		input.entrySet().forEach(i -> {
 			WebElement inputField = mortgagePage.getInputField(i.getKey());
-			mortgagePage.scrollToElementJsInFrame(mortgagePage.getFrameInput(), inputField);
 			Assertions.assertNotNull(inputField, "Поле для заполнения не найдено");
+			mortgagePage.scrollToElementJsInFrame(mortgagePage.getFrameInput(), inputField);
 			mortgagePage.fillInputField(inputField, String.valueOf(i.getValue()));
 			assertThat("Введенное значение неверно",
 					mortgagePage.getInputFieldValue(inputField), is(i.getValue()));
@@ -52,8 +64,8 @@ public class SecondaryHousingMortgageSteps extends BaseSteps {
 	public SecondaryHousingMortgageSteps checkCalculationCorrectness(Map<String, String> result) {
 		result.entrySet().forEach(i -> {
 			WebElement resultField = mortgagePage.getResult(i.getKey());
-			mortgagePage.scrollToElementJsInFrame(mortgagePage.getFrameInput(), resultField);
 			Assertions.assertNotNull(resultField, String.format("Поле %s не найдено", i.getKey()));
+			mortgagePage.scrollToElementJsInFrame(mortgagePage.getFrameInput(), resultField);
 			assertThat(String.format("Введенное значение %s неверно", i.getKey()),
 					mortgagePage.getMainResultValue(resultField), is(i.getValue()));
 		});

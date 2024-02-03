@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import ru.company.framework.listeners.MyTestWatcher;
 import ru.company.framework.managers.DriverManager;
 import ru.company.framework.managers.PropManager;
+import ru.company.framework.stepDefinitions.StartPageSteps;
 import ru.company.framework.utils.ConstProp;
 
 import java.io.File;
@@ -21,11 +22,12 @@ public class MortgageTest extends BaseTest {
 	@BeforeEach
 	public void setup() {
 		driverManager.getDriver().get(PropManager.getPropManager().getProperty(ConstProp.BASE_URL));
-		steps = pageManager.getSteps();
+		steps = pageManager.getPage(StartPageSteps.class);
 	}
 
 	@AfterEach
 	public void tearDown(){
+		pageManager.clearMapPages();
 		DriverManager.getDriverManager().quitDriver();
 	}
 

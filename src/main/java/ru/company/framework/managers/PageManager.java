@@ -1,11 +1,14 @@
 package ru.company.framework.managers;
 
-import ru.company.framework.pages.SecondaryHousingMortgagePage;
-import ru.company.framework.pages.StartPage;
-import ru.company.framework.stepDefinitions.StartPageSteps;
+import ru.company.framework.pages.BasePage;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PageManager {
 	private static PageManager pageManager = null;
+	private Map<String, BasePage> mapPages = new HashMap<>();
+
 	private PageManager() {
 	}
 
@@ -16,28 +19,18 @@ public class PageManager {
 		return pageManager;
 	}
 
-	private StartPage startPage;
-	private SecondaryHousingMortgagePage mortgagePage;
-	private StartPageSteps steps;
-
-	public StartPage getStartPage() {
-		if (startPage == null) {
-			startPage = new StartPage();
+	public <T extends BasePage> T getPage(Class<T> ex) {
+		if (mapPages.isEmpty() || mapPages.get(ex.getName()) == null) {
+			try {
+				mapPages.put(ex.getName(), ex.newInstance());
+			} catch (IllegalAccessException | InstantiationException e) {
+				e.printStackTrace();
+			}
 		}
-		return startPage;
+		return (T) mapPages.get(ex.getName());
 	}
 
-	public SecondaryHousingMortgagePage getMortgagePage() {
-		if (mortgagePage == null) {
-			mortgagePage = new SecondaryHousingMortgagePage();
-		}
-		return mortgagePage;
-	}
-
-	public StartPageSteps getSteps() {
-		if (steps == null) {
-			steps = new StartPageSteps();
-		}
-		return steps;
+	public void clearMapPages() {
+		mapPages.clear();
 	}
 }
